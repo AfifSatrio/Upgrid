@@ -7,6 +7,7 @@ import { ok, badRequest, serverError } from '@/lib/response'
 export async function POST(req: NextRequest) {
   try {
     const notification: MidtransNotification = await req.json()
+    console.log('Webhook received:', JSON.stringify(notification, null, 2))
 
     const {
       order_id,
@@ -25,6 +26,7 @@ export async function POST(req: NextRequest) {
     // --- Verifikasi signature Midtrans ---
     const isValid = verifyMidtransSignature(order_id, status_code, gross_amount, signature_key)
     if (!isValid) {
+      console.error('Signature tidak valid untuk order_id:', order_id)
       return badRequest('Invalid signature')
     }
 

@@ -12,7 +12,10 @@ export async function GET() {
       .eq('status_aktif', true)
       .order('harga', { ascending: true })
 
-    if (error) return serverError('Gagal mengambil data paket')
+    if (error) {
+      console.error('Supabase error:', error)
+      return serverError('Gagal mengambil data paket')
+    }
     return ok(data)
   } catch (err) {
     console.error('Error GET /api/paket:', err)
