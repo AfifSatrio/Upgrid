@@ -296,6 +296,47 @@ const CekStatusContent = () => {
                   </div>
                 </div>
 
+                {/* Update Progress Terbaru */}
+                {(order.status_pemesanan === "diproses" || order.status_pemesanan === "review") &&
+                  order.progress.length > 0 && (() => {
+                    const latest = [...order.progress].sort(
+                      (a, b) => new Date(b.tanggal_update).getTime() - new Date(a.tanggal_update).getTime()
+                    )[0];
+                    const pct = latest.persentase ?? 0;
+                    return (
+                      <div className="bg-primary-50 border border-primary-200 rounded-2xl p-8">
+                        <div className="flex items-center gap-2 mb-5">
+                          <span className="inline-block w-2 h-2 rounded-full bg-primary-500 animate-pulse" />
+                          <h3 className="font-poppins text-base font-bold text-primary-900">
+                            Update Progress Terbaru
+                          </h3>
+                        </div>
+
+                        <div className="mb-4">
+                          <div className="flex items-end justify-between mb-1.5">
+                            <span className="text-sm font-semibold text-gray-800">{latest.judul_update}</span>
+                            <span className="text-sm font-bold text-primary-700">{pct}%</span>
+                          </div>
+                          <div className="w-full bg-primary-100 rounded-full h-2.5 overflow-hidden">
+                            <div
+                              className="h-2.5 rounded-full bg-primary-500 transition-all duration-500"
+                              style={{ width: `${pct}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        {latest.deskripsi_progress && (
+                          <p className="text-sm text-gray-700 mb-3">{latest.deskripsi_progress}</p>
+                        )}
+
+                        <p className="text-xs text-gray-500">
+                          Diperbarui pada {formatDateTime(latest.tanggal_update)}
+                        </p>
+                      </div>
+                    );
+                  })()
+                }
+
                 {/* Progress Project */}
                 <div className="bg-gray-50 border border-gray-200 rounded-2xl p-8">
                   <h3 className="font-poppins text-xl font-bold text-gray-900 mb-8">
