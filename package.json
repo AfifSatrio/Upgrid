@@ -9,8 +9,10 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@remixicon/react": "^4.9.0",
     "@supabase/supabase-js": "^2.103.3",
     "bcrypt": "^6.0.0",
+    "framer-motion": "^12.38.0",
     "jose": "^6.2.2",
     "midtrans-client": "^1.4.3",
     "next": "16.2.4",

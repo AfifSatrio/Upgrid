@@ -47,9 +47,9 @@ export async function createSnapTransaction(params: SnapTransactionParam) {
       },
     ],
     callbacks: {
-      finish: `${process.env.NEXT_PUBLIC_APP_URL}/pesanan/selesai`,
-      error: `${process.env.NEXT_PUBLIC_APP_URL}/pesanan/gagal`,
-      pending: `${process.env.NEXT_PUBLIC_APP_URL}/pesanan/pending`,
+      finish: `${process.env.NEXT_PUBLIC_APP_URL}/pembayaran/berhasil`,
+      error: `${process.env.NEXT_PUBLIC_APP_URL}/pembayaran/gagal`,
+      pending: `${process.env.NEXT_PUBLIC_APP_URL}/pembayaran/berhasil`,
     },
   }
 
