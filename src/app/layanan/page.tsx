@@ -24,7 +24,7 @@ export default function Layanan() {
             <h1 className="font-poppins text-4xl md:text-5xl font-bold text-white mb-6">
               Untuk Pertumbuhan Bisnis Anda
             </h1>
-            <p className="text-lg text-primary-200 leading-relaxed">
+            <p className="text-lg text-primary-200 leading-relaxed text-white">
               Kami menyediakan dua layanan utama — pembuatan website profesional dan layanan digital creative agency — yang bisa Anda pilih sesuai kebutuhan dan skala bisnis Anda.
             </p>
           </motion.div>

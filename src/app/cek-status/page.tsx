@@ -173,15 +173,23 @@ const CekStatusContent = () => {
     <div className="flex flex-col min-h-screen">
 
       {/* ─── Header ─── */}
-      <section className="bg-gray-50 pt-12 pb-16 border-b border-gray-200">
-        <div className="container mx-auto px-4 md:px-8 max-w-4xl">
-          <p className="text-gray-400 text-sm mb-3">Lihat Pesanan Saya</p>
-          <h1 className="font-poppins text-4xl font-bold text-gray-900 mb-5">
-            Cek Status Pesanan Anda
-          </h1>
-          <p className="text-gray-600 text-base leading-relaxed border-l-4 border-primary-500 pl-5 max-w-xl">
-            Masukkan kode pemesanan yang anda terima setelah pembayaran untuk melihat status terkini dari project anda.
-          </p>
+      <section className="relative bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900 pt-16 pb-20 overflow-hidden">
+        <div className="pointer-events-none absolute -top-24 -right-24 w-80 h-80 bg-primary-500/10 rounded-full blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-16 -left-16 w-64 h-64 bg-secondary-500/10 rounded-full blur-3xl" />
+        <div className="container mx-auto px-4 md:px-8 max-w-4xl relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <p className="text-secondary-400 font-bold tracking-wider uppercase text-sm mb-3">Lihat Pesanan Saya</p>
+            <h1 className="font-poppins text-4xl md:text-5xl font-bold text-white mb-6">
+              Cek Status Pesanan Anda
+            </h1>
+            <p className="text-white text-lg text-primary-200 leading-relaxed border-l-4 border-primary-400 pl-6">
+              Masukkan kode pemesanan yang anda terima setelah pembayaran untuk melihat status terkini dari project anda.
+            </p>
+          </motion.div>
         </div>
       </section>
 
@@ -307,13 +315,12 @@ const CekStatusContent = () => {
                           {/* Timeline indicator */}
                           <div className="flex flex-col items-center">
                             <div
-                              className={`w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center transition-colors ${
-                                state === "done"
-                                  ? "bg-gray-800"
-                                  : state === "active"
+                              className={`w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center transition-colors ${state === "done"
+                                ? "bg-gray-800"
+                                : state === "active"
                                   ? "bg-gray-500"
                                   : "bg-gray-200"
-                              }`}
+                                }`}
                             >
                               {state === "done" && (
                                 <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">

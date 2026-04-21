@@ -33,7 +33,7 @@ export default function Tentang() {
             <h1 className="font-poppins text-4xl md:text-5xl font-bold text-white mb-6">
               UPGRID DIGITAL
             </h1>
-            <p className="text-lg text-primary-200 leading-relaxed border-l-4 border-primary-400 pl-6">
+            <p className="text-lg text-primary-200 leading-relaxed border-l-4 border-primary-400 pl-6 text-white">
               Kami adalah tim yang percaya bahwa setiap bisnis berhak tumbuh di era digital. Kami hadir untuk mewujudkannya.
             </p>
           </motion.div>

@@ -20,7 +20,7 @@ export const Button = React.forwardRef<HTMLButtonElement, MotionButtonProps>(
   ) => {
     // Definisi gaya berdasarkan variant
     const baseStyle =
-      "inline-flex items-center justify-center font-medium rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2";
+      "inline-flex items-center justify-center font-medium rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed disabled:pointer-events-none";
 
     const variants = {
       primary:

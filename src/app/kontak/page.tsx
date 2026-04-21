@@ -69,7 +69,7 @@ export default function Kontak() {
             <h1 className="font-poppins text-4xl md:text-5xl font-bold text-white mb-6">
               Hubungi Kami
             </h1>
-            <p className="text-lg text-primary-200 leading-relaxed border-l-4 border-primary-400 pl-6">
+            <p className="text-white text-lg text-primary-200 leading-relaxed border-l-4 border-primary-400 pl-6">
               Punya pertanyaan, ingin konsultasi, atau siap memulai project? Kami senang mendengar
               dari Anda. Hubungi kami melalui cara yang paling nyaman untuk Anda.
             </p>

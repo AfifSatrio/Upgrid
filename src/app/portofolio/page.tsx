@@ -47,7 +47,7 @@ export default function Portofolio() {
           setItems(json.data);
         }
       })
-      .catch(() => {})
+      .catch(() => { })
       .finally(() => setIsLoading(false));
   }, []);
 
@@ -70,7 +70,7 @@ export default function Portofolio() {
             <h1 className="font-poppins text-4xl md:text-5xl font-bold text-white mb-6">
               Karya Nyata, Hasil Nyata
             </h1>
-            <p className="text-lg text-primary-200 leading-relaxed border-l-4 border-primary-400 pl-6">
+            <p className="text-white text-lg text-primary-200 leading-relaxed border-l-4 border-primary-400 pl-6">
               Setiap project yang kami kerjakan adalah bukti komitmen kami terhadap kualitas. Lihat
               sendiri bagaimana kami membantu bisnis-bisnis ini membangun kehadiran digital mereka.
             </p>
