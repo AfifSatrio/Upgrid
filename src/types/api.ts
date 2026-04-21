@@ -66,7 +66,7 @@ export interface CreateTestimoniRequest {
 export interface UpdateTestimoniRequest extends Partial<CreateTestimoniRequest> {}
 
 export interface UpdateStatusPemesananRequest {
-  status_pemesanan: 'menunggu_pembayaran' | 'diproses' | 'selesai' | 'dibatalkan'
+  status_pemesanan: 'menunggu_pembayaran' | 'diproses' | 'review' | 'selesai' | 'dibatalkan'
   tanggal_mulai?: string
   tanggal_selesai?: string
 }

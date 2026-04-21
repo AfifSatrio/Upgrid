@@ -42,7 +42,7 @@ export async function PUT(req: NextRequest, { params }: Params) {
     const { id } = await params
     const body: UpdateStatusPemesananRequest = await req.json()
 
-    const validStatuses = ['menunggu_pembayaran', 'diproses', 'selesai', 'dibatalkan']
+    const validStatuses = ['menunggu_pembayaran', 'diproses', 'review', 'selesai', 'dibatalkan']
     if (!body.status_pemesanan || !validStatuses.includes(body.status_pemesanan)) {
       return badRequest('Status pemesanan tidak valid')
     }
@@ -66,6 +66,27 @@ export async function PUT(req: NextRequest, { params }: Params) {
     return ok(data, 'Status pemesanan berhasil diperbarui')
   } catch (err) {
     console.error('Error PUT /api/admin/pemesanan/[id]:', err)
+    return serverError()
+  }
+}
+
+export async function DELETE(req: NextRequest, { params }: Params) {
+  try {
+    const admin = await getAdminFromRequest(req)
+    if (!admin) return unauthorized()
+
+    const { id } = await params
+    const supabase = createServerClient()
+
+    const { error } = await supabase
+      .from('pemesanan')
+      .delete()
+      .eq('id_pemesanan', Number(id))
+
+    if (error) return notFound('Pemesanan tidak ditemukan')
+    return ok(null, 'Pesanan berhasil dihapus')
+  } catch (err) {
+    console.error('Error DELETE /api/admin/pemesanan/[id]:', err)
     return serverError()
   }
 }
