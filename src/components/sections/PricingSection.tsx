@@ -14,6 +14,7 @@ type BenefitPaket = {
 type ApiPaket = {
   id_paket: number;
   nama_paket: string;
+  slug: string;
   deskripsi: string | null;
   harga: number;
   estimasi_hari: number;
@@ -214,7 +215,7 @@ export const PricingSection = () => {
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.1 }}
                 >
-                  <FlipCard pkg={pkg} isPopular={idx === 1} />
+                  <FlipCard pkg={pkg} isPopular={pkg.slug === "standard"} />
                 </motion.div>
               ))}
         </div>

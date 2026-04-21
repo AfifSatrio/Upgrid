@@ -10,7 +10,7 @@ export async function GET() {
       .from('paket')
       .select('*, benefit_paket(*)')
       .eq('status_aktif', true)
-      .order('harga', { ascending: true })
+      .order('id_paket', { ascending: true })
 
     if (error) {
       console.error('Supabase error:', error)

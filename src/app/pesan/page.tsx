@@ -302,7 +302,7 @@ const Step3Form = ({
           <span className="font-bold text-gray-900 text-lg">{formatHarga(selectedPkg.harga)}</span>
         </div>
 
-        <div className="flex items-start gap-3 pt-1">
+        <div className={`flex items-start gap-3 pt-1 rounded-xl p-3 transition-colors ${!agreed ? "bg-amber-50 border border-amber-200" : "bg-green-50 border border-green-200"}`}>
           <input
             type="checkbox"
             id="agree"
@@ -315,6 +315,13 @@ const Step3Form = ({
             pembayaran bersifat non-refundable.
           </label>
         </div>
+
+        {!agreed && (
+          <p className="text-xs text-amber-700 flex items-center gap-1.5">
+            <span>⚠</span>
+            Centang persetujuan di atas untuk melanjutkan pembayaran.
+          </p>
+        )}
       </div>
 
       <div className="flex justify-between mt-8">
