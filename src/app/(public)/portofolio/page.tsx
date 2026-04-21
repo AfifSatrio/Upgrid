@@ -131,7 +131,7 @@ export default function Portofolio() {
                     className="group"
                   >
                     <div
-                      className={`h-72 w-full rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center bg-gradient-to-br ${gradientClass}`}
+                      className={`h-52 sm:h-60 md:h-72 w-full rounded-2xl mb-4 overflow-hidden relative flex items-center justify-center bg-gradient-to-br ${gradientClass}`}
                     >
                       {item.gambar ? (
                         <Image

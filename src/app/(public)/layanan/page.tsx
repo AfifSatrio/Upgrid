@@ -46,7 +46,7 @@ export default function Layanan() {
               viewport={{ once: true }}
               className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div className="h-64 bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center border-b border-gray-100">
+              <div className="h-44 sm:h-52 md:h-64 bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center border-b border-gray-100">
                 <span className="text-primary-300 font-medium">Image Placeholder</span>
               </div>
               <div className="p-8">
@@ -72,7 +72,7 @@ export default function Layanan() {
               transition={{ delay: 0.1 }}
               className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div className="h-64 bg-gradient-to-br from-secondary-50 to-secondary-100 flex items-center justify-center border-b border-gray-100">
+              <div className="h-44 sm:h-52 md:h-64 bg-gradient-to-br from-secondary-50 to-secondary-100 flex items-center justify-center border-b border-gray-100">
                 <span className="text-secondary-400 font-medium">Image Placeholder</span>
               </div>
               <div className="p-8">

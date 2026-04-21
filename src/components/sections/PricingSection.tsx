@@ -40,7 +40,7 @@ const FlipCard = ({ pkg, isPopular }: { pkg: ApiPaket; isPopular: boolean }) => 
   const [isFlipped, setIsFlipped] = useState(false);
 
   return (
-    <div className="relative w-full h-[500px]" style={{ perspective: "1200px" }}>
+    <div className="relative w-full h-[460px] sm:h-[480px] md:h-[500px]" style={{ perspective: "1200px" }}>
       <motion.div
         className="relative w-full h-full"
         style={{ transformStyle: "preserve-3d" }}
@@ -109,8 +109,8 @@ const FlipCard = ({ pkg, isPopular }: { pkg: ApiPaket; isPopular: boolean }) => 
           }`}
           style={{ backfaceVisibility: "hidden", transform: "rotateY(180deg)" }}
         >
-          <div className="overflow-hidden">
-            <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200">
+          <div className="flex flex-col min-h-0 flex-1 overflow-hidden">
+            <div className="flex items-center justify-between mb-3 pb-2 border-b border-gray-200 flex-shrink-0">
               <h3 className="font-poppins text-sm font-bold text-gray-900">
                 Yang Anda Dapatkan
               </h3>
@@ -121,7 +121,7 @@ const FlipCard = ({ pkg, isPopular }: { pkg: ApiPaket; isPopular: boolean }) => 
                 ← Kembali
               </button>
             </div>
-            <ul className="space-y-1.5">
+            <ul className="space-y-1.5 overflow-y-auto flex-1 pr-0.5">
               {pkg.benefit_paket.map((b) => (
                 <li key={b.id_benefit} className="flex items-start text-xs text-gray-700">
                   <svg
@@ -156,7 +156,7 @@ const FlipCard = ({ pkg, isPopular }: { pkg: ApiPaket; isPopular: boolean }) => 
 
 // ─── Skeleton ─────────────────────────────────────────────────────────────────
 const CardSkeleton = () => (
-  <div className="w-full h-[500px] rounded-2xl bg-gray-100 animate-pulse" />
+  <div className="w-full h-[460px] sm:h-[480px] md:h-[500px] rounded-2xl bg-gray-100 animate-pulse" />
 );
 
 // ─── PricingSection ───────────────────────────────────────────────────────────

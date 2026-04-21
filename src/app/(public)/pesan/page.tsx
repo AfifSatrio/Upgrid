@@ -44,16 +44,16 @@ const Stepper = ({ currentStep }: { currentStep: number }) => (
       const active = n <= currentStep;
       return (
         <div key={n} className="flex items-center">
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
             <div
-              className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 transition-colors duration-300 ${
+              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center font-bold text-sm flex-shrink-0 transition-colors duration-300 ${
                 active ? "bg-gray-800 text-white" : "bg-gray-200 text-gray-400"
               }`}
             >
               {n}
             </div>
             <span
-              className={`font-medium text-sm whitespace-nowrap transition-colors duration-300 ${
+              className={`hidden sm:inline font-medium text-sm whitespace-nowrap transition-colors duration-300 ${
                 active ? "text-gray-900" : "text-gray-400"
               }`}
             >
@@ -62,7 +62,7 @@ const Stepper = ({ currentStep }: { currentStep: number }) => (
           </div>
           {idx < 2 && (
             <div
-              className={`w-14 md:w-24 h-px mx-4 md:mx-6 transition-colors duration-300 ${
+              className={`w-6 sm:w-14 md:w-24 h-px mx-2 sm:mx-4 md:mx-6 transition-colors duration-300 ${
                 n < currentStep ? "bg-gray-700" : "bg-gray-200"
               }`}
             />
@@ -324,12 +324,12 @@ const Step3Form = ({
         )}
       </div>
 
-      <div className="flex justify-between mt-8">
+      <div className="flex flex-col-reverse sm:flex-row sm:justify-between gap-3 mt-8">
         <Button variant="outline" onClick={onBack} size="md">
           Kembali
         </Button>
         <Button variant="primary" onClick={onSubmit} disabled={!agreed || isLoading}>
-          {isLoading ? "Memproses..." : `Bayar Sekarang – ${formatHarga(selectedPkg.harga)}`}
+          {isLoading ? "Memproses..." : `Bayar – ${formatHarga(selectedPkg.harga)}`}
         </Button>
       </div>
     </div>
