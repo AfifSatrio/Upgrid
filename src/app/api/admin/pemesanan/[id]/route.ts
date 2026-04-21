@@ -62,7 +62,11 @@ export async function PUT(req: NextRequest, { params }: Params) {
       .select()
       .single()
 
-    if (error || !data) return notFound('Pemesanan tidak ditemukan')
+    if (error) {
+      console.error('Supabase PUT pemesanan error:', error)
+      return serverError(error.message ?? 'Gagal memperbarui status')
+    }
+    if (!data) return notFound('Pemesanan tidak ditemukan')
     return ok(data, 'Status pemesanan berhasil diperbarui')
   } catch (err) {
     console.error('Error PUT /api/admin/pemesanan/[id]:', err)
@@ -76,14 +80,33 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     if (!admin) return unauthorized()
 
     const { id } = await params
+    const numId = Number(id)
     const supabase = createServerClient()
+
+    // Delete child records first to avoid FK constraint violations
+    const [prog, bayar] = await Promise.all([
+      supabase.from('progress_pemesanan').delete().eq('id_pemesanan', numId),
+      supabase.from('pembayaran').delete().eq('id_pemesanan', numId),
+    ])
+
+    if (prog.error) {
+      console.error('Delete progress error:', prog.error)
+      return serverError('Gagal menghapus data progress: ' + prog.error.message)
+    }
+    if (bayar.error) {
+      console.error('Delete pembayaran error:', bayar.error)
+      return serverError('Gagal menghapus data pembayaran: ' + bayar.error.message)
+    }
 
     const { error } = await supabase
       .from('pemesanan')
       .delete()
-      .eq('id_pemesanan', Number(id))
+      .eq('id_pemesanan', numId)
 
-    if (error) return notFound('Pemesanan tidak ditemukan')
+    if (error) {
+      console.error('Delete pemesanan error:', error)
+      return serverError(error.message ?? 'Gagal menghapus pesanan')
+    }
     return ok(null, 'Pesanan berhasil dihapus')
   } catch (err) {
     console.error('Error DELETE /api/admin/pemesanan/[id]:', err)

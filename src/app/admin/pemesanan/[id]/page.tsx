@@ -198,9 +198,17 @@ export default function OrderDetailPage({
 
   const handleDeleteOrder = async () => {
     if (!confirm(`Hapus pesanan "${order?.nama_proyek}" (${order?.kode_pemesanan})?\n\nSemua data terkait termasuk progress dan pembayaran akan ikut terhapus. Tindakan ini tidak bisa dibatalkan.`)) return;
-    const res = await fetch(`/api/admin/pemesanan/${id}`, { method: "DELETE" });
-    const json = await res.json();
-    if (json.success) router.push("/admin/pemesanan");
+    try {
+      const res = await fetch(`/api/admin/pemesanan/${id}`, { method: "DELETE" });
+      const json = await res.json();
+      if (json.success) {
+        router.push("/admin/pemesanan");
+      } else {
+        alert("Gagal menghapus pesanan: " + (json.error ?? "Terjadi kesalahan"));
+      }
+    } catch {
+      alert("Terjadi kesalahan saat menghapus pesanan");
+    }
   };
 
   if (isLoading) {
