@@ -11,6 +11,8 @@ import {
   RiMenuLine,
   RiCloseLine,
   RiUser3Line,
+  RiPriceTag3Line,
+  RiChatQuoteLine,
 } from "@remixicon/react";
 
 type AdminInfo = { nama: string; email: string; role: string };
@@ -18,7 +20,9 @@ type AdminInfo = { nama: string; email: string; role: string };
 const NAV_ITEMS = [
   { href: "/admin", label: "Dashboard", icon: RiDashboardLine, exact: true },
   { href: "/admin/pemesanan", label: "Pesanan", icon: RiShoppingBag2Line, exact: false },
+  { href: "/admin/paket", label: "Paket Layanan", icon: RiPriceTag3Line, exact: false },
   { href: "/admin/portofolio", label: "Portofolio", icon: RiImageLine, exact: false },
+  { href: "/admin/testimoni", label: "Testimoni", icon: RiChatQuoteLine, exact: false },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
