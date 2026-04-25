@@ -79,6 +79,7 @@ export default function Home() {
                   src="/images/hero.gif"
                   alt="Hero UPGRID DIGITAL"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                   priority
                 />
@@ -152,6 +153,7 @@ export default function Home() {
                   src="/images/about.jpg"
                   alt="Tentang UPGRID DIGITAL"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -236,6 +238,7 @@ export default function Home() {
                   src="/images/stats.jpg"
                   alt="Track Record UPGRID DIGITAL"
                   fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
                   className="object-cover"
                 />
               </div>
@@ -268,8 +271,14 @@ export default function Home() {
               viewport={{ once: true }}
               className="group border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 bg-white flex flex-col h-full"
             >
-              <div className="h-64 bg-gradient-to-br from-primary-50 to-primary-100 w-full relative flex items-center justify-center border-b border-gray-100">
-                <span className="text-primary-300 font-medium">Image Placeholder</span>
+              <div className="h-64 w-full relative border-b border-gray-100 overflow-hidden">
+                <Image
+                  src="/images/pembuatan-website.jpg"
+                  alt="Jasa Pembuatan Website"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <div className="p-8 flex-grow flex flex-col justify-between">
                 <div>
@@ -291,8 +300,14 @@ export default function Home() {
               transition={{ delay: 0.1 }}
               className="group border border-gray-100 rounded-3xl overflow-hidden hover:shadow-xl transition-all duration-300 bg-white flex flex-col h-full"
             >
-              <div className="h-64 bg-gradient-to-br from-secondary-50 to-secondary-100 w-full relative flex items-center justify-center border-b border-gray-100">
-                <span className="text-secondary-400 font-medium">Image Placeholder</span>
+              <div className="h-64 w-full relative border-b border-gray-100 overflow-hidden">
+                <Image
+                  src="/images/digital-agency.jpg"
+                  alt="Digital Creative Agency"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <div className="p-8 flex-grow flex flex-col justify-between">
                 <div>
@@ -372,6 +387,7 @@ export default function Home() {
                         src={item.gambar}
                         alt={item.judul}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         className="object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     ) : (

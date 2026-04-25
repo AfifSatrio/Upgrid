@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { CallToActionCTA } from "@/components/sections/CallToActionCTA";
 import { FeaturesSection } from "@/components/sections/FeaturesSection";
@@ -68,8 +69,14 @@ export default function Tentang() {
               viewport={{ once: true }}
               className="lg:w-1/2 w-full"
             >
-              <div className="aspect-[4/3] bg-gray-100 rounded-3xl overflow-hidden shadow-sm flex items-center justify-center border-2 border-dashed border-gray-300">
-                <span className="text-gray-400">Image Placeholder</span>
+              <div className="relative aspect-[4/3] rounded-3xl overflow-hidden shadow-sm">
+                <Image
+                  src="/images/about-page.jpg"
+                  alt="Siapa Kami - UPGRID DIGITAL"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-cover"
+                />
               </div>
             </motion.div>
           </div>

@@ -1,10 +1,11 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import { PricingSection } from "@/components/sections/PricingSection";
 import { BenefitsSection } from "@/components/sections/BenefitsSection";
 import { CallToActionCTA } from "@/components/sections/CallToActionCTA";
-import Link from "next/link";
 
 export default function Layanan() {
   return (
@@ -46,8 +47,14 @@ export default function Layanan() {
               viewport={{ once: true }}
               className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div className="h-44 sm:h-52 md:h-64 bg-gradient-to-br from-primary-50 to-primary-100 flex items-center justify-center border-b border-gray-100">
-                <span className="text-primary-300 font-medium">Image Placeholder</span>
+              <div className="h-44 sm:h-52 md:h-64 relative border-b border-gray-100 overflow-hidden">
+                <Image
+                  src="/images/pembuatan-website.jpg"
+                  alt="Jasa Pembuatan Website"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <div className="p-8">
                 <h3 className="font-poppins text-2xl font-bold text-gray-900 mb-4">Jasa Pembuatan Website</h3>
@@ -72,8 +79,14 @@ export default function Layanan() {
               transition={{ delay: 0.1 }}
               className="bg-white border border-gray-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-lg transition-shadow"
             >
-              <div className="h-44 sm:h-52 md:h-64 bg-gradient-to-br from-secondary-50 to-secondary-100 flex items-center justify-center border-b border-gray-100">
-                <span className="text-secondary-400 font-medium">Image Placeholder</span>
+              <div className="h-44 sm:h-52 md:h-64 relative border-b border-gray-100 overflow-hidden">
+                <Image
+                  src="/images/digital-agency.jpg"
+                  alt="Digital Creative Agency"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                />
               </div>
               <div className="p-8">
                 <h3 className="font-poppins text-2xl font-bold text-gray-900 mb-4">Digital Creative Agency</h3>

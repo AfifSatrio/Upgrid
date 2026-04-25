@@ -1,7 +1,7 @@
 "use client";
 
-import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "../ui/Button";
 
@@ -36,8 +36,14 @@ export const CallToActionCTA = () => {
           </div>
 
           <div className="lg:w-1/2 w-full relative z-10">
-            <div className="aspect-[4/3] bg-white/10 rounded-2xl flex items-center justify-center border-2 border-dashed border-white/30 backdrop-blur-sm">
-              <span className="text-white/50 font-medium">Image Placeholder</span>
+            <div className="relative aspect-[4/3] rounded-2xl overflow-hidden">
+              <Image
+                src="/images/connect-with-us.png"
+                alt="Connect with UPGRID DIGITAL"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             </div>
           </div>
         </motion.div>
