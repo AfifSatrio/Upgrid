@@ -280,8 +280,8 @@ export default function AdminPortofolio() {
               <thead>
                 <tr className="text-left text-gray-500 text-xs uppercase tracking-wider bg-gray-50 border-b border-gray-100">
                   <th className="px-5 py-3 font-semibold">Proyek</th>
-                  <th className="px-5 py-3 font-semibold">Tanggal Publish</th>
-                  <th className="px-5 py-3 font-semibold">Link</th>
+                  <th className="px-5 py-3 font-semibold hidden sm:table-cell">Tanggal Publish</th>
+                  <th className="px-5 py-3 font-semibold hidden sm:table-cell">Link</th>
                   <th className="px-5 py-3 font-semibold">Tampil</th>
                   <th className="px-5 py-3 font-semibold">Aksi</th>
                 </tr>
@@ -307,8 +307,8 @@ export default function AdminPortofolio() {
                         </div>
                       </div>
                     </td>
-                    <td className="px-5 py-4 text-gray-500 text-xs whitespace-nowrap">{formatDate(item.tanggal_publish)}</td>
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-4 text-gray-500 text-xs whitespace-nowrap hidden sm:table-cell">{formatDate(item.tanggal_publish)}</td>
+                    <td className="px-5 py-4 hidden sm:table-cell">
                       {item.link_project ? (
                         <a
                           href={item.link_project}

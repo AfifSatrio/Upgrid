@@ -148,20 +148,20 @@ export default function AdminPemesanan() {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-left text-gray-500 text-xs uppercase tracking-wider bg-gray-50 border-b border-gray-100">
-                    <th className="px-5 py-3 font-semibold">Kode</th>
+                    <th className="px-5 py-3 font-semibold hidden md:table-cell">Kode</th>
                     <th className="px-5 py-3 font-semibold">Pelanggan</th>
                     <th className="px-5 py-3 font-semibold">Proyek / Paket</th>
-                    <th className="px-5 py-3 font-semibold">Total</th>
-                    <th className="px-5 py-3 font-semibold">Pembayaran</th>
+                    <th className="px-5 py-3 font-semibold hidden md:table-cell">Total</th>
+                    <th className="px-5 py-3 font-semibold hidden md:table-cell">Pembayaran</th>
                     <th className="px-5 py-3 font-semibold">Status</th>
-                    <th className="px-5 py-3 font-semibold">Tanggal</th>
+                    <th className="px-5 py-3 font-semibold hidden md:table-cell">Tanggal</th>
                     <th className="px-5 py-3 font-semibold" />
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-gray-100">
                   {orders.map((o) => (
                     <tr key={o.id_pemesanan} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5 hidden md:table-cell">
                         <span className="font-mono text-xs font-medium text-gray-700">{o.kode_pemesanan}</span>
                       </td>
                       <td className="px-5 py-3.5">
@@ -172,8 +172,8 @@ export default function AdminPemesanan() {
                         <p className="text-gray-900">{o.nama_proyek}</p>
                         <p className="text-xs text-gray-400">{o.paket?.nama_paket ?? "-"}</p>
                       </td>
-                      <td className="px-5 py-3.5 font-medium text-gray-900 whitespace-nowrap">{formatIDR(o.total_harga)}</td>
-                      <td className="px-5 py-3.5">
+                      <td className="px-5 py-3.5 font-medium text-gray-900 whitespace-nowrap hidden md:table-cell">{formatIDR(o.total_harga)}</td>
+                      <td className="px-5 py-3.5 hidden md:table-cell">
                         {o.pembayaran ? (
                           <span className={`inline-block text-xs font-semibold px-2.5 py-1 rounded-full ${STATUS_BAYAR_COLOR[o.pembayaran.status_pembayaran] ?? "bg-gray-100 text-gray-700"}`}>
                             {STATUS_BAYAR_LABEL[o.pembayaran.status_pembayaran] ?? o.pembayaran.status_pembayaran}
@@ -185,7 +185,7 @@ export default function AdminPemesanan() {
                           {STATUS_TABS.find(t => t.key === o.status_pemesanan)?.label ?? o.status_pemesanan}
                         </span>
                       </td>
-                      <td className="px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap">{formatDate(o.tanggal_pesan)}</td>
+                      <td className="px-5 py-3.5 text-gray-500 text-xs whitespace-nowrap hidden md:table-cell">{formatDate(o.tanggal_pesan)}</td>
                       <td className="px-5 py-3.5">
                         <Link
                           href={`/admin/pemesanan/${o.id_pemesanan}`}
