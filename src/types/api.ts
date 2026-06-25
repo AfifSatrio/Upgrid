@@ -40,6 +40,7 @@ export interface CreateProgressRequest {
   deskripsi_progress?: string
   persentase: number
   status_progress: 'brief' | 'desain' | 'development' | 'revisi' | 'selesai'
+  lampiran_urls?: string[]
 }
 
 export interface UpdateProgressRequest extends Partial<Omit<CreateProgressRequest, 'id_pemesanan'>> {}

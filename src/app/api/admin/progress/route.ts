@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     if (!admin) return unauthorized()
 
     const body: CreateProgressRequest = await req.json()
-    const { id_pemesanan, judul_update, persentase, status_progress } = body
+    const { id_pemesanan, judul_update, persentase, status_progress, lampiran_urls } = body
 
     if (!id_pemesanan || !judul_update || persentase === undefined || !status_progress) {
       return badRequest('Field id_pemesanan, judul_update, persentase, dan status_progress wajib diisi')
@@ -45,6 +45,7 @@ export async function POST(req: NextRequest) {
         deskripsi_progress: body.deskripsi_progress ?? null,
         persentase,
         status_progress,
+        lampiran_urls: lampiran_urls ?? null,
         tanggal_update: new Date().toISOString(),
       })
       .select()

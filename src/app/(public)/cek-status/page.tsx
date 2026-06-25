@@ -14,6 +14,11 @@ type ProgressItem = {
   persentase: number | null;
   status_progress: string;
   tanggal_update: string;
+  lampiran_urls?: string[] | null;
+  feedback_user?: string | null;
+  tanggal_feedback?: string | null;
+  balasan_admin?: string | null;
+  tanggal_balasan?: string | null;
 };
 
 type OrderDetail = {
@@ -144,6 +149,13 @@ const CekStatusContent = () => {
   const [error, setError] = useState<string | null>(null);
   const [searched, setSearched] = useState(false);
 
+  const [feedbackState, setFeedbackState] = useState<{ id_progress: number | null, text: string, loading: boolean, error: string | null }>({
+    id_progress: null,
+    text: "",
+    loading: false,
+    error: null
+  });
+
   const handleSearch = async (e?: React.FormEvent) => {
     e?.preventDefault();
     const trimmed = code.trim().toUpperCase();
@@ -166,6 +178,33 @@ const CekStatusContent = () => {
       setError("Terjadi kesalahan. Silakan coba lagi.");
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleFeedbackSubmit = async (e: React.FormEvent, id_progress: number) => {
+    e.preventDefault();
+    if (!feedbackState.text.trim() || !order) return;
+    
+    setFeedbackState(prev => ({ ...prev, loading: true, error: null }));
+    try {
+      const res = await fetch('/api/orders/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          kode_pemesanan: order.kode_pemesanan, 
+          id_progress, 
+          feedback_user: feedbackState.text 
+        })
+      });
+      const json = await res.json();
+      if (json.success) {
+        setFeedbackState({ id_progress: null, text: "", loading: false, error: null });
+        handleSearch(); // Refresh data
+      } else {
+        setFeedbackState(prev => ({ ...prev, loading: false, error: json.error || 'Gagal mengirim masukan' }));
+      }
+    } catch {
+      setFeedbackState(prev => ({ ...prev, loading: false, error: 'Terjadi kesalahan' }));
     }
   };
 
@@ -400,6 +439,101 @@ const CekStatusContent = () => {
                     })}
                   </div>
                 </div>
+
+                {/* Riwayat Progress (Detail) */}
+                {order.progress.length > 0 && (
+                  <div className="bg-white border border-gray-200 rounded-2xl p-8 shadow-sm">
+                    <h3 className="font-poppins text-xl font-bold text-gray-900 mb-6">
+                      Riwayat Pengerjaan
+                    </h3>
+                    <div className="space-y-6">
+                      {order.progress.map((p, idx, arr) => (
+                        <div key={p.id_progress} className="relative flex gap-5">
+                          <div className="flex flex-col items-center">
+                            <div className="w-10 h-10 rounded-full bg-primary-100 border border-primary-200 flex items-center justify-center flex-shrink-0 z-10">
+                              <span className="text-primary-700 text-xs font-bold">{p.persentase ?? 0}%</span>
+                            </div>
+                            {idx < arr.length - 1 && (
+                              <div className="absolute top-10 bottom-0 left-5 w-px bg-gray-200 -translate-x-1/2" />
+                            )}
+                          </div>
+                          <div className="pb-8 min-w-0 flex-1">
+                            <p className="text-base font-bold text-gray-900">{p.judul_update}</p>
+                            <p className="text-xs text-gray-500 mt-1">{formatDateTime(p.tanggal_update)}</p>
+                            {p.deskripsi_progress && (
+                              <p className="text-sm text-gray-700 mt-2">{p.deskripsi_progress}</p>
+                            )}
+
+                            {/* Photos */}
+                            {p.lampiran_urls && p.lampiran_urls.length > 0 && (
+                              <div className="mt-3 flex flex-wrap gap-2">
+                                {p.lampiran_urls.map((url, i) => (
+                                  <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-24 h-24 rounded-lg overflow-hidden border border-gray-200 hover:opacity-90 transition-opacity">
+                                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                                    <img src={url} alt={`Lampiran ${i+1}`} className="w-full h-full object-cover" />
+                                  </a>
+                                ))}
+                              </div>
+                            )}
+
+                            {/* Feedback Section */}
+                            <div className="mt-4 bg-gray-50 rounded-xl p-4 border border-gray-100">
+                              {p.feedback_user ? (
+                                <div className="space-y-3">
+                                  <div>
+                                    <p className="text-xs font-semibold text-gray-500 mb-1">Masukan Anda</p>
+                                    <p className="text-sm text-gray-800">{p.feedback_user}</p>
+                                    {p.tanggal_feedback && <p className="text-[10px] text-gray-400 mt-0.5">{formatDateTime(p.tanggal_feedback)}</p>}
+                                  </div>
+                                  
+                                  {p.balasan_admin && (
+                                    <div className="ml-4 pl-4 border-l-2 border-primary-200">
+                                      <p className="text-xs font-semibold text-primary-600 mb-1">Balasan Admin</p>
+                                      <p className="text-sm text-gray-800">{p.balasan_admin}</p>
+                                      {p.tanggal_balasan && <p className="text-[10px] text-gray-400 mt-0.5">{formatDateTime(p.tanggal_balasan)}</p>}
+                                    </div>
+                                  )}
+                                </div>
+                              ) : (
+                                <div>
+                                  {feedbackState.id_progress === p.id_progress ? (
+                                    <form onSubmit={(e) => handleFeedbackSubmit(e, p.id_progress)} className="space-y-3">
+                                      <textarea
+                                        autoFocus
+                                        rows={3}
+                                        placeholder="Berikan masukan atau revisi terkait update ini..."
+                                        value={feedbackState.text}
+                                        onChange={(e) => setFeedbackState(prev => ({ ...prev, text: e.target.value }))}
+                                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none"
+                                      />
+                                      <div className="flex items-center gap-2">
+                                        <Button variant="primary" type="submit" disabled={feedbackState.loading || !feedbackState.text.trim()} className="!py-1.5 !px-4 !text-xs rounded-lg">
+                                          {feedbackState.loading ? "Mengirim..." : "Kirim Masukan"}
+                                        </Button>
+                                        <button type="button" onClick={() => setFeedbackState({ id_progress: null, text: "", loading: false, error: null })} className="text-xs text-gray-500 hover:text-gray-900 px-2 py-1">
+                                          Batal
+                                        </button>
+                                        {feedbackState.error && <span className="text-xs text-red-500">{feedbackState.error}</span>}
+                                      </div>
+                                    </form>
+                                  ) : (
+                                    <button
+                                      onClick={() => setFeedbackState({ id_progress: p.id_progress, text: "", loading: false, error: null })}
+                                      className="text-sm font-medium text-primary-600 hover:text-primary-700 transition-colors"
+                                    >
+                                      + Berikan Masukan
+                                    </button>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* WA button */}
                 <div className="text-center pt-2">

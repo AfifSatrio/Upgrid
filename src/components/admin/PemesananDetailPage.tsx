@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { RiArrowLeftLine, RiAddLine, RiDeleteBin6Line } from "@remixicon/react";
+import { createBrowserClient } from "@/lib/supabase/client";
 
 type ProgressItem = {
   id_progress: number;
@@ -13,6 +14,11 @@ type ProgressItem = {
   status_progress: string;
   tanggal_update: string;
   admin: { nama: string } | null;
+  lampiran_urls?: string[] | null;
+  feedback_user?: string | null;
+  tanggal_feedback?: string | null;
+  balasan_admin?: string | null;
+  tanggal_balasan?: string | null;
 };
 
 type OrderDetail = {
@@ -99,8 +105,15 @@ export function PemesananDetailPage({ id }: { id: string }) {
   const [progDeskripsi, setProgDeskripsi] = useState("");
   const [progPersentase, setProgPersentase] = useState(0);
   const [progStatus, setProgStatus] = useState("brief");
+  const [progFiles, setProgFiles] = useState<File[]>([]);
   const [progLoading, setProgLoading] = useState(false);
   const [progMsg, setProgMsg] = useState("");
+
+  const [replyState, setReplyState] = useState<{id_progress: number | null, text: string, loading: boolean}>({
+    id_progress: null,
+    text: "",
+    loading: false
+  });
 
   const fetchOrder = useCallback(() => {
     fetch(`/api/admin/pemesanan/${id}`)
@@ -150,6 +163,20 @@ export function PemesananDetailPage({ id }: { id: string }) {
     setProgLoading(true);
     setProgMsg("");
     try {
+      let lampiran_urls: string[] = [];
+      if (progFiles.length > 0) {
+        const supabase = createBrowserClient();
+        for (const file of progFiles) {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
+          const filePath = `${id}/${fileName}`;
+          const { data, error } = await supabase.storage.from('progress_updates').upload(filePath, file);
+          if (error) throw new Error("Gagal mengunggah foto");
+          const { data: { publicUrl } } = supabase.storage.from('progress_updates').getPublicUrl(filePath);
+          lampiran_urls.push(publicUrl);
+        }
+      }
+
       const res = await fetch("/api/admin/progress", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -159,6 +186,7 @@ export function PemesananDetailPage({ id }: { id: string }) {
           deskripsi_progress: progDeskripsi || undefined,
           persentase: progPersentase,
           status_progress: progStatus,
+          lampiran_urls: lampiran_urls.length > 0 ? lampiran_urls : undefined,
         }),
       });
       const json = await res.json();
@@ -168,13 +196,38 @@ export function PemesananDetailPage({ id }: { id: string }) {
         setProgDeskripsi("");
         setProgPersentase(0);
         setProgStatus("brief");
+        setProgFiles([]);
         setShowProgressForm(false);
         fetchOrder();
       }
-    } catch {
-      setProgMsg("Terjadi kesalahan");
+    } catch (err: any) {
+      setProgMsg(err.message || "Terjadi kesalahan");
     } finally {
       setProgLoading(false);
+    }
+  };
+
+  const handleReplySubmit = async (e: React.FormEvent, id_progress: number) => {
+    e.preventDefault();
+    if (!replyState.text.trim()) return;
+    setReplyState(p => ({...p, loading: true}));
+    try {
+      const res = await fetch('/api/admin/progress/reply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id_progress, balasan_admin: replyState.text })
+      });
+      const json = await res.json();
+      if (json.success) {
+        setReplyState({id_progress: null, text: "", loading: false});
+        fetchOrder();
+      } else {
+        alert(json.error || "Gagal membalas");
+        setReplyState(p => ({...p, loading: false}));
+      }
+    } catch {
+      alert("Gagal membalas");
+      setReplyState(p => ({...p, loading: false}));
     }
   };
 
@@ -392,15 +445,35 @@ export function PemesananDetailPage({ id }: { id: string }) {
                   className="w-full accent-primary-600"
                 />
               </div>
-              <div>
-                <label className="block text-xs font-medium text-gray-600 mb-1.5">Deskripsi (opsional)</label>
-                <textarea
-                  rows={3}
-                  value={progDeskripsi}
-                  onChange={(e) => setProgDeskripsi(e.target.value)}
-                  placeholder="Keterangan tambahan untuk pelanggan..."
-                  className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none"
-                />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1.5">Deskripsi (opsional)</label>
+                  <textarea
+                    rows={3}
+                    value={progDeskripsi}
+                    onChange={(e) => setProgDeskripsi(e.target.value)}
+                    placeholder="Keterangan tambahan untuk pelanggan..."
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1.5">Lampiran Foto (Max 4)</label>
+                  <input
+                    type="file"
+                    multiple
+                    accept="image/*"
+                    onChange={(e) => {
+                      if (e.target.files) {
+                        const files = Array.from(e.target.files).slice(0, 4);
+                        setProgFiles(files);
+                      }
+                    }}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none"
+                  />
+                  {progFiles.length > 0 && (
+                    <p className="text-xs text-gray-500 mt-1">{progFiles.length} file dipilih</p>
+                  )}
+                </div>
               </div>
               <div className="flex items-center gap-3">
                 <button
@@ -452,6 +525,58 @@ export function PemesananDetailPage({ id }: { id: string }) {
                           </p>
                           {p.deskripsi_progress && (
                             <p className="text-sm text-gray-600 mt-1">{p.deskripsi_progress}</p>
+                          )}
+                          
+                          {p.lampiran_urls && p.lampiran_urls.length > 0 && (
+                            <div className="mt-3 flex flex-wrap gap-2">
+                              {p.lampiran_urls.map((url, i) => (
+                                <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="block w-20 h-20 rounded-lg overflow-hidden border border-gray-200 hover:opacity-90 transition-opacity">
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img src={url} alt={`Lampiran ${i+1}`} className="w-full h-full object-cover" />
+                                </a>
+                              ))}
+                            </div>
+                          )}
+
+                          {p.feedback_user && (
+                            <div className="mt-3 bg-amber-50 rounded-xl p-3 border border-amber-100">
+                              <p className="text-xs font-semibold text-amber-800 mb-1">Masukan Pelanggan:</p>
+                              <p className="text-sm text-amber-900">{p.feedback_user}</p>
+                              
+                              {p.balasan_admin ? (
+                                <div className="mt-2 ml-3 pl-3 border-l-2 border-primary-300">
+                                  <p className="text-xs font-semibold text-primary-700 mb-1">Balasan Anda:</p>
+                                  <p className="text-sm text-primary-900">{p.balasan_admin}</p>
+                                </div>
+                              ) : (
+                                <div className="mt-2">
+                                  {replyState.id_progress === p.id_progress ? (
+                                    <form onSubmit={(e) => handleReplySubmit(e, p.id_progress)} className="space-y-2">
+                                      <textarea
+                                        autoFocus
+                                        rows={2}
+                                        placeholder="Tulis balasan..."
+                                        value={replyState.text}
+                                        onChange={e => setReplyState(prev => ({...prev, text: e.target.value}))}
+                                        className="w-full bg-white border border-gray-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-primary-500 outline-none resize-none"
+                                      />
+                                      <div className="flex gap-2">
+                                        <button type="submit" disabled={replyState.loading || !replyState.text.trim()} className="px-3 py-1 bg-primary-600 text-white text-xs font-medium rounded-lg">
+                                          {replyState.loading ? "Mengirim..." : "Kirim"}
+                                        </button>
+                                        <button type="button" onClick={() => setReplyState({id_progress: null, text: "", loading: false})} className="px-3 py-1 text-gray-500 text-xs hover:text-gray-900">
+                                          Batal
+                                        </button>
+                                      </div>
+                                    </form>
+                                  ) : (
+                                    <button onClick={() => setReplyState({id_progress: p.id_progress, text: "", loading: false})} className="text-xs font-medium text-primary-600 hover:text-primary-700">
+                                      Balas Masukan
+                                    </button>
+                                  )}
+                                </div>
+                              )}
+                            </div>
                           )}
                         </div>
                         <button

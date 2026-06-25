@@ -50,7 +50,12 @@ export async function GET(
           deskripsi_progress,
           persentase,
           status_progress,
-          tanggal_update
+          tanggal_update,
+          lampiran_urls,
+          feedback_user,
+          tanggal_feedback,
+          balasan_admin,
+          tanggal_balasan
         )
       `)
       .eq('kode_pemesanan', kode.toUpperCase())
